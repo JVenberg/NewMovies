@@ -1,0 +1,11 @@
+.env
+state.json
+.claude/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.DS_Store
+service-account*.json
+*-credentials.json
+*.key

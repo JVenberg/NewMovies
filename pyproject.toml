@@ -1,0 +1,9 @@
+[project]
+name = "newmovies"
+version = "0.1.0"
+description = "Weekly digest of newly home-released movies (TMDB -> Gmail)"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.uv]
+package = false
