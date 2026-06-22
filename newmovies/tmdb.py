@@ -36,4 +36,5 @@ def discover(region, gte, lte, max_pages=20):
 
 
 def detail(movie_id):
-    return _get("/movie/%d" % movie_id, append_to_response="watch/providers,external_ids")
+    return _get("/movie/%d" % movie_id,
+                append_to_response="watch/providers,external_ids,credits")

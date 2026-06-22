@@ -10,6 +10,11 @@ def _build_record(movie, det):
     def names(key):
         return [p["provider_name"] for p in providers.get(key, [])]
 
+    credits = det.get("credits", {})
+    directors = [c["name"] for c in credits.get("crew", []) if c.get("job") == "Director"]
+    cast = [c["name"] for c in
+            sorted(credits.get("cast", []), key=lambda c: c.get("order", 999))[:3]]
+
     return {
         "id": movie["id"],
         "title": det.get("title") or movie.get("title"),
@@ -20,6 +25,8 @@ def _build_record(movie, det):
         "runtime": det.get("runtime"),
         "language": langs.name(det.get("original_language") or movie.get("original_language")),
         "genres": [g["name"] for g in det.get("genres", [])],
+        "directors": directors,
+        "cast": cast,
         "poster_path": det.get("poster_path") or movie.get("poster_path"),
         "imdb_id": (det.get("external_ids") or {}).get("imdb_id"),
         "providers": {

@@ -25,7 +25,7 @@ def _shell(inner):
         '</table></div>' % (inner, FONT, FAINT))
 
 
-def _chips(label, names):
+def _credit_line(label, names):
     if not names:
         return ""
     return ('<div style="margin-top:4px;font-size:13px;color:%s;line-height:1.5;">'
@@ -63,10 +63,8 @@ def _card(r, is_last):
         links.append('<a href="%s" style="color:%s;text-decoration:none;">JustWatch</a>'
                      % (html.escape(r["providers"]["link"]), LINK))
 
-    p = r.get("providers", {})
-    watch = (_chips("Stream", p.get("stream"))
-             + _chips("Rent", p.get("rent"))
-             + _chips("Buy", p.get("buy")))
+    credits_block = (_credit_line("Director", r.get("directors"))
+                     + _credit_line("Starring", r.get("cast")))
 
     date_line = ""
     if r.get("home_date"):
@@ -94,7 +92,7 @@ def _card(r, is_last):
         tmdb_url, INK, html.escape(r["title"]),
         MUTED, meta_line,
         BODY, html.escape(r.get("overview") or ""),
-        watch, date_line,
+        credits_block, date_line,
         (' <span style="color:%s;">&middot;</span> ' % FAINT).join(links),
     )
 
@@ -139,11 +137,10 @@ def render_text(records, win_start, win_end):
             r["title"], r.get("home_date") or "?",
             ("  %.1f/10" % rating) if rating else "",
             ("  [%s]" % r["language"]) if r.get("language") else ""))
-        p = r.get("providers", {})
-        if p.get("stream"):
-            lines.append("    Stream: " + ", ".join(p["stream"]))
-        if p.get("rent"):
-            lines.append("    Rent: " + ", ".join(p["rent"]))
+        if r.get("directors"):
+            lines.append("    Director: " + ", ".join(r["directors"]))
+        if r.get("cast"):
+            lines.append("    Starring: " + ", ".join(r["cast"]))
         if r.get("imdb_id"):
             lines.append("    https://www.imdb.com/title/%s/" % r["imdb_id"])
     return "\n".join(lines)
